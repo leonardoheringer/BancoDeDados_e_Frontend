@@ -1,0 +1,26 @@
+{
+  "name": "bancodedados_e_frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardoheringer/BancoDeDados_e_Frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leonardoheringer/BancoDeDados_e_Frontend/issues"
+  },
+  "homepage": "https://github.com/leonardoheringer/BancoDeDados_e_Frontend#readme",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.2",
+    "mysql2": "^3.14.0"
+  }
+}
