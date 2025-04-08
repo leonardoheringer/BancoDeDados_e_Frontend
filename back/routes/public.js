@@ -9,14 +9,13 @@ const JWT_SECRET = process.env.JWT_SECRET || "ipabinha"; // Usando o JWT_SECRET 
 const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Z5R2M9IQ',
+    password: 'informaticasenai',
     database: 'postagem',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
 
-// Cadastro de usuário
 router.post('/cadastro', async (req, res) => {
     const { nome, email, senha } = req.body;
 
@@ -27,21 +26,28 @@ router.post('/cadastro', async (req, res) => {
             return res.status(400).json({ message: 'Email já cadastrado' });
         }
 
+        // Gerar o hash da senha
         const salt = await bcrypt.genSalt(10);
         const hashSenha = await bcrypt.hash(senha, salt);
 
+        // Inserir o novo usuário no banco de dados
         const query = 'INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)';
-        await db.execute(query, [nome, email, hashSenha]);
+        const [result] = await db.execute(query, [nome, email, hashSenha]);
+
+        // O ID do novo usuário gerado é retornado no result.insertId
+        const userId = result.insertId;
 
         // Gerar Token JWT após o cadastro
-        const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: '1h' });
 
+        // Responder com sucesso e o token
         res.status(201).json({ message: 'Usuário registrado com sucesso', token });
     } catch (err) {
         console.error('Erro ao cadastrar usuário:', err);
         res.status(500).json({ error: 'Erro ao salvar usuário no banco de dados' });
     }
 });
+
 
 // Login de usuário
 router.post('/login', async (req, res) => {
